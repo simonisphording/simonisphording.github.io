@@ -124,16 +124,17 @@
             var adj = adjacent_coords(x, y);
             for(var i = 0; i < adj.length; i++){
                 var coord = adj[i]
-                var x2 = coord[0];
-                var y2 = coord[1];
-                a = board[x2][y2];
-                if(is_prefix(s + a)){
-                    search_from_dice(board, all_words, s + a, x2, y2, temp);
-                }
+		if(!temp.includes(coord)){
+			var x2 = coord[0];
+                	var y2 = coord[1];
+                	a = board[x2][y2];
+                	if(is_prefix(s + a)){
+                    		search_from_dice(board, all_words, s + a, x2, y2, temp);
+                	}
+		}
             }
         }
 
-        input = "AAPDEFGHIJKLMNOP"
         function generate_wordlist(input){
             var all_words = []
             gf = new GameField(input);
