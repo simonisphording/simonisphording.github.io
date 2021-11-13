@@ -113,7 +113,7 @@
             return result;
         }
 
-        function search_from_dice(board, all_words, s, x, y, visited_coords){
+        function search_from_dice(board, all_words, s, x, y, visited_coords, debug=False){
             temp = visited_coords;
             temp.push([x,y])
 
@@ -124,7 +124,7 @@
             var adj = adjacent_coords(x, y);
             for(var i = 0; i < adj.length; i++){
                 var coord = adj[i]
-		console.log(coord, temp)
+		if(debug){console.log(coord, temp)}
 		if(!temp.includes(coord)){
 			var x2 = coord[0];
                 	var y2 = coord[1];
