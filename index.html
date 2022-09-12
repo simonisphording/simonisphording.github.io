@@ -448,18 +448,34 @@
         }
         requestAnimationFrame(update);
 
-        // Mouse drag functions
+        // Touch and mouse functions
 
-        canvas.addEventListener('touchstart', function() {mousedown(canvas, event);});
-		canvas.addEventListener('touchmove',function() {mousemove(canvas, event);});
+        canvas.addEventListener('touchstart', function() {mousedown(canvas, event, touch=true);});
+		canvas.addEventListener('touchmove',function() {mousemove(canvas, event, touch=true);});
         canvas.addEventListener('touchend',mouseup);
         
+        canvas.addEventListener('mousedown', function() {mousedown(canvas, event);});
+        canvas.addEventListener('mousemove', function() {mousemove(canvas, event);});
+        canvas.addEventListener('mouseup', mouseup)
+
         canvas.addEventListener("touchstart",  function(event) {event.preventDefault()})
         canvas.addEventListener("touchmove",   function(event) {event.preventDefault()})
         canvas.addEventListener("touchend",    function(event) {event.preventDefault()})
         canvas.addEventListener("touchcancel", function(event) {event.preventDefault()})
-        
+
+        canvas.addEventListener('mousedown', function(event) {event.preventDefault()})
+        canvas.addEventListener('mousemove', function(event) {event.preventDefault()})
+        canvas.addEventListener('mouseup', function(event) {event.preventDefault()})
+
         function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+
+        function getTouchPos(canvas, evt) {
 			var rect = canvas.getBoundingClientRect();
             return {
 				x: evt.touches[0].clientX - rect.left,
@@ -467,9 +483,14 @@
 			};
 		}
 
-        function mousedown(canvas, evt) {
-			var mousePos = getMousePos(canvas, evt);
-			isMouseDown=true
+        function mousedown(canvas, evt, touch=false) {
+			if(touch){
+                var mousePos = getTouchPos(canvas, evt);
+			} 
+            else {
+                var mousePos = getMousePos(canvas, evt);
+            }
+            isMouseDown=true
 			var currentPosition = getMousePos(canvas, evt);
 			ctx.moveTo(currentPosition.x, currentPosition.y)
 			ctx.beginPath();
@@ -479,9 +500,14 @@
 
         }
         
-        function mousemove(canvas, evt) {
+        function mousemove(canvas, evt, touch=false) {
             if(isMouseDown){
-                var currentPosition = getMousePos(canvas, evt);
+                if(touch){
+                    var currentPosition = getTouchPos(canvas, evt)
+                }
+                else {
+                    var currentPosition = getMousePos(canvas, evt);
+                }
                 ctx.lineTo(currentPosition.x, currentPosition.y)
                 ctx.stroke();
                 store(currentPosition.x, currentPosition.y, currentSize, currentColor);
