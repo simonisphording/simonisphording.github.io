@@ -9,10 +9,10 @@
 <body>
     <p id='mylog'/>
 
-    <canvas id="myCanvas" width="320" height="480" style="position:absolute; top: 8px; left: 16px"></canvas>
-    <input type = "text" id ="UserInput" size="14" style="font-size: 24px; position: absolute; top: 496px; left: 20px;">
-    <button onclick="resetGame()" type="button" style="position: absolute; top: 550px; left: 16px;">Restart</button>
-    <button onclick="shareBoardState()" type="button" style="position: absolute; top: 550px; left: 150px;">Share boardstate</button>
+    <canvas id="myCanvas" width=400% height=600% style="position:absolute; top: 8px; left: 16px"></canvas>
+    <input type = "text" id ="UserInput" size="14" style="font-size: 24px; position: relative; top: 496px; left: 20px;">
+    <button id="resetButton" onclick="resetGame()" type="button" style="position: absolute; top: 550px; left: 16px;">Restart</button>
+    <button id="shareButton" onclick="shareBoardState()" type="button" style="position: absolute; top: 550px; left: 150px;">Share boardstate</button>
     <script src="./trie.js"></script>
     <script>
             
@@ -175,6 +175,10 @@
     <script>
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
+        var textBox = document.getElementById("UserInput")
+        var resetButton = document.getElementById("resetButton")
+        var shareButton = document.getElementById("shareButton")
+
         var fps = 100;
         var chars;
         var isMouseDown=false;
@@ -265,7 +269,44 @@
             charstring += chars[i]
         }
 
-        var fontRatio = canvas.width/320
+        var maxWidth = document.body.clientWidth;
+        var maxHeight = document.body.clientHeight;
+        var gameRatio = 320/578
+        if(maxHeight * gameRatio >= maxWidth){
+            cWidth = maxWidth
+        } else {
+            cWidth = maxHeight * gameRatio
+        }
+
+        //var cWidth = 320;
+        var offSetLeft = 16;
+        var offSetTop = 8;
+        
+        canvas.width = cWidth
+        canvas.height = cWidth / 2 * 3
+        canvas.style.width = cWidth
+        canvas.style.height = cWidth / 2 * 3
+        canvas.style.left = offSetLeft
+        canvas.style.top = offSetTop
+        var fontRatio = cWidth/320
+
+        textBox.style.top = offSetTop + canvas.height * 485/480;
+        textBox.style.left = offSetLeft + canvas.width * 10/320;
+        textBox.style.width = canvas.width * 300/320;
+        textBox.style.height = 40 / 480 * canvas.height;
+        textBox.style.fontSize = 24 * fontRatio;
+
+        resetButton.style.top = offSetTop + canvas.height * 530/480;
+        resetButton.style.left = offSetLeft + canvas.width * 10/320;
+        resetButton.style.width = canvas.width * 107.5/320;
+        resetButton.style.height = 40/480 * canvas.height;
+        resetButton.style.fontSize = 24 * fontRatio;
+
+        shareButton.style.top = offSetTop + canvas.height * 530/480;
+        shareButton.style.left = offSetLeft + canvas.width * 122.5/320;
+        shareButton.style.width = canvas.width * 187.5/320;
+        shareButton.style.height = 40/480 * canvas.height;
+        shareButton.style.fontSize = 24 * fontRatio;
 
         var diceRowCount = 4;
         var diceColumnCount = 4;
@@ -366,7 +407,8 @@
         var wordlist;
         var guessed = [];
 
-        document.getElementById('UserInput').onkeypress = function(e){
+        //document.getElementById('UserInput').onkeypress = function(e){
+        textBox.onkeypress = function(e){
         if (!e) e = window.event;
             if (e.keyCode == '13'){
                 answer = this.value.toUpperCase();
