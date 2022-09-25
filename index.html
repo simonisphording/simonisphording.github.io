@@ -10,7 +10,7 @@
     <p id='mylog'/>
 
     <canvas id="myCanvas" width=400% height=600% style="position:absolute; top: 8px; left: 16px"></canvas>
-    <input type = "text" id ="UserInput" size="14" style="font-size: 24px; position: relative; top: 496px; left: 20px;">
+    <!-- <input type = "text" id ="UserInput" size="14" style="font-size: 24px; position: relative; top: 496px; left: 20px;">-->
     <button id="resetButton" onclick="resetGame()" type="button" style="position: absolute; top: 550px; left: 16px;">Restart</button>
     <button id="shareButton" onclick="shareBoardState()" type="button" style="position: absolute; top: 550px; left: 150px;">Share boardstate</button>
     <script src="./trie.js"></script>
@@ -24,7 +24,7 @@
 
         var maxWidth = document.body.clientWidth;
         var maxHeight = document.body.clientHeight;
-        var gameRatio = 320/578
+        var gameRatio = 320/533
         if(maxHeight * gameRatio >= maxWidth){
             cWidth = maxWidth
         } else {
@@ -43,19 +43,21 @@
         canvas.style.top = offSetTop
         var fontRatio = cWidth/320
 
+        /*
         textBox.style.top = offSetTop + canvas.height * 485/480;
         textBox.style.left = offSetLeft + canvas.width * 10/320;
         textBox.style.width = canvas.width * 300/320;
         textBox.style.height = 40 / 480 * canvas.height;
         textBox.style.fontSize = 24 * fontRatio;
+        */
 
-        resetButton.style.top = offSetTop + canvas.height * 530/480;
+        resetButton.style.top = offSetTop + canvas.height * 485/480;
         resetButton.style.left = offSetLeft + canvas.width * 10/320;
         resetButton.style.width = canvas.width * 107.5/320;
         resetButton.style.height = 40/480 * canvas.height;
         resetButton.style.fontSize = 24 * fontRatio;
 
-        shareButton.style.top = offSetTop + canvas.height * 530/480;
+        shareButton.style.top = offSetTop + canvas.height * 485/480;
         shareButton.style.left = offSetLeft + canvas.width * 122.5/320;
         shareButton.style.width = canvas.width * 187.5/320;
         shareButton.style.height = 40/480 * canvas.height;
@@ -124,6 +126,7 @@
             }
         }
         
+        /*
         textBox.onkeypress = function(e){
             if (!e) e = window.event;
             if (e.keyCode == '13'){
@@ -134,6 +137,7 @@
                 return false;
             }
         }
+        */
 
         requestAnimationFrame(update);
 
